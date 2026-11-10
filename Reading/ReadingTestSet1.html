@@ -1,0 +1,5287 @@
+<!DOCTYPE html>
+<html lang="ms">
+
+<head>
+
+<meta charset="UTF-8">
+
+<title>
+Reading Test V4.1
+</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+
+<style>
+
+*{
+box-sizing:border-box;
+}
+
+html{
+width:100%;
+max-width:100%;
+overflow-x:hidden;
+}
+
+
+body {
+
+margin:0;
+
+font-family:"Noto Sans SC",
+"Microsoft YaHei",
+sans-serif;
+
+display:flex;
+
+flex-direction:column;
+
+align-items:center;
+
+justify-content:center;
+
+min-height:100vh;
+height:auto;
+
+transition:0.3s;
+
+width:100%;
+max-width:100vw;
+overflow-x:hidden;
+box-sizing:border-box;
+
+}
+
+
+
+.card {
+
+font-size:clamp(35px, 12vw, 100px);
+
+margin-bottom:20px;
+
+text-align:center;
+
+white-space:nowrap;
+
+transform-origin:center;
+
+}
+
+@media(max-width:600px){
+
+.options {
+grid-template-columns:1fr;
+}
+
+
+.card{
+
+font-size:12vw;
+
+}
+
+}
+
+
+
+.pinyin {
+
+font-size:35px;
+
+color:#666;
+
+margin-bottom:30px;
+
+}
+
+
+
+button {
+
+font-size:clamp(16px,5vw,24px);
+
+padding:10px 20px;
+
+max-width:90vw;
+
+margin:10px;
+
+border:none;
+
+border-radius:10px;
+
+cursor:pointer;
+
+}
+
+
+
+.start-btn {
+
+background:#2196F3;
+
+color:white;
+
+}
+
+
+
+.stop-btn {
+
+background:#f44336;
+
+color:white;
+
+}
+
+
+
+.restart-btn {
+
+background:#333;
+
+color:white;
+
+}
+
+
+
+.range-btn {
+
+background:#4CAF50;
+
+color:white;
+
+}
+
+
+
+.skip-btn {
+
+background:#ff9800;
+
+color:white;
+
+}
+
+
+
+.result {
+
+font-size:28px;
+
+text-align:center;
+
+margin-top:20px;      
+
+}
+
+
+
+.correct {
+
+background:#c8f7c5;
+
+}
+
+
+
+.incorrect {
+
+background:#ffcdd2;
+
+}
+
+
+
+.wrong-list {
+
+margin-top:20px;
+
+color:red;
+
+font-size:20px;
+
+}
+
+/* =======================
+  新版成绩设计
+======================= */
+
+
+.result-card{
+
+width:100%;
+
+max-width:380px;
+
+margin:0 auto;
+
+box-sizing:border-box;
+
+background:#fff7ed;
+
+border-radius:15px;
+
+padding:10px;
+
+overflow:hidden;
+
+}
+
+
+.result-title{
+
+font-size:40px;
+
+font-weight:bold;
+
+margin-bottom:20px;
+
+}
+
+
+
+.result-stats{
+
+background:white;
+
+border-radius:15px;
+
+overflow:hidden;
+
+margin-top:20px;
+
+}
+
+
+
+.stat-row{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:12px 15px;
+font-size:15px;
+border-bottom:1px solid #eee;
+}
+
+
+.stat-row span:first-child{
+
+flex:1;
+text-align:left;
+
+}
+
+
+.stat-row:last-child{
+
+border-bottom:none;
+
+}
+
+
+
+.stat-value{
+
+font-weight:bold;
+
+font-size:22px;
+
+}
+
+
+
+.correct-num{
+
+color:green;
+
+}
+
+
+.wrong-num{
+
+color:red;
+
+}
+
+
+.rate-num{
+
+color:#1565c0;
+
+}
+
+
+
+.wrong-box{
+background:#dceafa;
+
+padding:12px;
+
+margin-top:20px;
+margin-bottom:5px;
+
+border-radius:15px;
+
+text-align:center;
+
+box-sizing:border-box;
+}
+
+.wrong-icon{
+font-size:24px;
+margin-bottom:4px;
+}
+
+.wrong-title-cn{
+font-size:17px;
+font-weight:bold;
+margin-bottom:3px;
+}
+
+.wrong-title-en{
+font-size:16px;
+font-weight:bold;
+margin-bottom:3px;
+}
+
+.wrong-title-bm{
+font-size:15px;
+font-weight:bold;
+margin-bottom:10px;
+}
+
+.wrong-word{
+background:rgba(255,255,255,0.45);
+
+color:#1565c0;
+
+padding:10px 8px;
+
+border-radius:12px;
+
+font-size:16px;
+
+font-weight:bold;
+
+line-height:1.5;
+
+word-break:break-word;
+}
+
+.pass-small,
+.fail-small{
+
+font-size:16px;
+
+}
+
+/* FAIL 主标题 */
+.fail-main{
+
+font-size:28px;
+
+font-weight:900;
+
+line-height:1;
+
+}
+
+/* FAIL 下面的文字 */
+.fail-small{
+font-size:10px;
+font-weight:normal;
+}
+
+
+/* PASS / FAIL 设计 */
+
+.pass-box,
+.fail-box {
+
+font-size:24px;
+
+font-weight:bold;
+
+padding:8px;
+
+border-radius:0;
+
+margin:0;
+
+}
+
+
+.pass-box {
+
+background:#d8ffd8;
+
+color:#2e7d32;
+
+border-radius:12px;
+
+width:100px;
+
+height:125px;
+
+padding:8px;
+
+display:flex;
+
+flex-direction:column;
+
+align-items:center;
+
+justify-content:center;
+
+box-sizing:border-box;
+
+}
+
+
+.fail-box {
+
+background:#ffd6d6;
+
+color:#c62828;
+
+border-radius:12px;
+
+width:100px;
+
+height:125px;
+
+padding:8px;
+
+display:flex;
+
+flex-direction:column;
+
+align-items:center;
+
+justify-content:center;
+
+box-sizing:border-box;
+
+}
+
+
+.pass-small{
+font-size:10px;
+font-weight:normal;
+line-height:1.3;
+}
+
+.fail-small{
+font-size:10px;
+font-weight:normal;
+line-height:1.3;
+}
+
+.normal {
+
+background:white;
+
+}
+
+@keyframes pop {
+
+0% {
+
+transform:scale(0.5);
+
+opacity:0;
+
+}
+
+
+100% {
+
+transform:scale(1);
+
+opacity:1;
+
+}
+
+}
+
+.phrase-box{
+
+width:80%;          /* 控制左右宽度 */
+
+margin:0 auto 10px; /* 自动居中 */
+
+padding:5px 10px;
+
+background:#ffffff;
+
+border-radius:15px;
+
+text-align:center;
+
+}
+
+
+.phrase-title{
+
+font-size:18px;
+
+color:#777;
+
+margin-bottom:8px;
+
+}
+
+
+.phrase{
+
+font-size:15px;
+
+font-weight:bold;
+
+color:#1565c0;
+
+}
+
+/* =======================
+学生登录画面
+======================= */
+
+#loginScreen {
+
+text-align:center;
+
+width:90%;
+
+max-width:500px;
+
+}
+
+
+#loginScreen h1 {
+
+font-size:32px;
+
+margin-bottom:30px;
+
+}
+
+
+#loginScreen input,
+#loginScreen select {
+
+width:100%;
+
+box-sizing:border-box;
+
+font-size:22px;
+
+padding:15px;
+
+margin:10px 0;
+
+border:1px solid #ccc;
+
+border-radius:10px;
+
+}
+
+
+#testScreen {
+
+width:100%;
+
+text-align:center;
+
+}
+
+#saveBtn {
+
+background:#673ab7;
+
+color:white;
+
+}
+
+#teacherDashboard{
+
+width:100%;
+
+margin-top:40px;
+
+text-align:center;
+
+}
+
+
+#teacherDashboard h2{
+
+font-size:24px;
+
+}
+
+
+.result-table{
+
+width:100%;
+
+max-width:100%;
+
+font-size:clamp(10px,2.8vw,14px);
+
+table-layout:fixed;
+
+}
+
+
+.result-table th{
+
+background:#1e3a5f;
+
+color:white;
+
+padding:10px;
+
+}
+
+
+.result-table td{
+
+border:1px solid #ddd;
+
+padding:10px;
+
+font-size:12px;
+
+}
+
+.result-table th,
+.result-table td{
+
+word-break:break-word;
+
+overflow-wrap:break-word;
+
+}
+
+
+/* 加这里 */
+.result-table td:first-child,
+.result-table th:first-child{
+
+min-width:80px;
+white-space:normal;
+word-break:normal;
+overflow-wrap:normal;
+
+}
+
+
+.pass{
+
+color:green;
+
+font-weight:bold;
+
+}
+
+
+.fail{
+
+color:red;
+
+font-weight:bold;
+
+}
+
+/* =====================
+完成成绩页面
+===================== */
+
+body.result-mode{
+
+min-height:100vh;
+
+height:auto;
+
+overflow-y:auto;
+
+justify-content:flex-start;
+
+padding-top:10px;
+
+padding-bottom:20px;
+
+box-sizing:border-box;
+
+background:#fff7ed;
+}
+
+
+body.result-mode #testScreen{
+
+height:auto;
+
+overflow:visible;
+
+}
+
+.result h1{
+
+font-size:32px;
+
+margin:5px 0;
+
+}
+
+#result button{
+
+font-size:18px;
+
+padding:8px 20px;
+
+}
+
+.wrong-box span{
+
+color:#1565c0;
+
+font-weight:bold;
+
+}
+
+.centre-title{
+
+font-size:28px;
+
+font-weight:bold;
+
+text-align:center;
+
+margin:0 0 10px 0;
+
+white-space:nowrap;
+
+letter-spacing:1px;
+
+}
+
+.student-info{
+
+font-size:16px;
+
+line-height:1.8;
+
+margin:0;
+
+color:#555;
+
+text-align:left;
+
+flex:1;
+
+}
+
+.result-actions{
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+gap:20px;
+
+margin-top:10px;
+
+padding:0 22px;
+
+width:100%;
+
+box-sizing:border-box;
+
+}
+
+
+.save-result-btn{
+
+background:#ffd900;
+
+font-size:18px !important;
+
+padding:0 22px !important;
+
+margin:0 !important;
+
+border:none;
+
+border-radius:10px;
+
+cursor:pointer;
+
+height:44px;
+
+min-width:130px;
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+box-sizing:border-box;
+
+}
+
+
+.restart-result-btn{
+
+background:#333;
+
+color:white;
+
+font-size:18px !important;
+
+padding:0 22px !important;
+
+margin:0 !important;
+
+border:none;
+
+border-radius:10px;
+
+cursor:pointer;
+
+height:44px;
+
+min-width:130px;
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+box-sizing:border-box;
+
+}
+
+.result-header{
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+gap:15px;
+
+margin-bottom:10px;
+
+}
+
+
+.result-status{
+
+flex-shrink:0;
+
+min-width:150px;
+
+text-align:center;
+
+}
+
+/* 成绩页面顶部：学生资料 + PASS/FAIL */
+
+.result-header-row{
+display:flex;
+align-items:stretch;
+justify-content:space-between;
+gap:12px;
+
+width:100%;
+
+margin-bottom:20px;
+}
+
+
+.result-header-row .student-info{
+flex:1;
+min-width:0;
+
+text-align:left;
+font-size:15px;
+line-height:1.9;
+margin:0;
+
+color:#555;
+}
+
+/* 左边学生资料 */
+
+.result-header-row .student-info{
+
+flex:1;
+min-width:0;
+
+font-size:15px;
+line-height:1.9;
+
+margin:0;
+color:#555;
+
+text-align:left;
+
+box-sizing:border-box;
+
+display:flex;
+flex-direction:column;
+
+justify-content:center;
+}
+
+
+/* 右边 PASS / FAIL */
+
+.result-header-row .pass-box,
+.result-header-row .fail-box{
+
+width:150px;
+min-width:150px;
+
+height:250px;
+
+padding:8px;
+
+border-radius:10px;    
+
+flex-shrink:0;
+
+margin:0;
+
+display:flex;
+flex-direction:column;
+
+align-items:center;
+justify-content:center;
+
+text-align:center;
+
+box-sizing:border-box;
+}
+
+/* 手机屏幕 */
+
+@media(max-width:600px){
+
+.result-header-row{
+gap:10px;
+}
+
+.result-header-row .student-info{
+font-size:14px;
+}
+
+.result-header-row .pass-box,
+.result-header-row .fail-box{
+
+width:150px;
+min-width:150px;
+
+height:250px;
+
+padding:8px;
+
+border-radius:10px;
+
+flex-shrink:0;
+
+margin:0;
+
+display:flex;
+flex-direction:column;
+
+align-items:center;
+justify-content:center;
+
+text-align:center;
+
+box-sizing:border-box;
+
+height:auto;
+}
+
+}
+
+/* 学生资料每一行 */
+.info-row{
+margin:8px 0;
+display:flex;
+flex-direction:column;
+align-items:flex-start;
+}
+
+
+/* 前面的说明文字 */
+.info-label{
+font-size:15px;
+color:#555;
+flex-shrink:0;
+}
+
+
+/* Candy / Test / Date */
+.info-value{
+
+font-size:15px;
+font-weight:bold;
+color:#0d47a1;
+background:#dbeafe;
+padding:6px 10px;
+border-radius:6px;
+display:inline-block;
+white-space:nowrap;
+border-left:3px solid #1565c0;
+margin-top:3px;
+
+}
+
+/* =====================
+APP HEADER DESIGN 2
+===================== */
+
+
+.app-header{
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+gap:8px;
+
+background:#fff7ed;
+
+border-radius:15px;
+
+padding:10px 12px;
+
+margin-bottom:15px;
+
+box-sizing:border-box;
+
+}
+
+
+.moon-logo{
+
+width:55px;
+
+height:55px;
+
+object-fit:contain;
+
+}
+
+
+.app-header-text{
+
+text-align:left;
+
+}
+
+
+.app-title{
+
+font-size:18px;
+
+font-weight:900;
+
+color:#17365d;
+
+letter-spacing:0.5px;
+
+}
+
+
+.app-subtitle{
+
+font-size:9px;
+
+font-weight:bold;
+
+color:#315b8a;
+
+margin-top:3px;
+
+}
+
+.sad-icon{
+
+width:55px;
+
+height:55px;
+
+margin-top:5px;
+
+}
+
+.pass-icon{
+
+width:55px;
+
+height:55px;
+
+margin-top:5px;
+
+}
+
+.pass-main{
+
+font-size:28px;
+
+font-weight:900;
+
+line-height:1;
+
+}
+
+.footer-wave{
+
+width:calc(100% + 20px);
+
+margin-left:-10px;
+
+margin-top:20px;
+
+line-height:0;
+
+}
+
+
+.footer-wave img{
+
+width:100%;
+
+height:auto;
+
+display:block;
+
+}
+
+/* =======================
+学生进度详情弹窗
+======================= */
+
+.detail-modal{
+
+display:none;
+
+position:fixed;
+
+top:0;
+left:0;
+
+width:100%;
+height:100%;
+
+background:rgba(0,0,0,0.5);
+
+justify-content:center;
+align-items:center;
+
+z-index:9999;
+
+overflow-y:auto;   /* ⭐增加 */
+
+}
+
+
+.detail-box{
+
+width:500px;
+max-width:500px;
+
+max-height:90vh;   /* ⭐限制弹窗最高90%屏幕高度 */
+
+overflow-y:auto;   /* ⭐允许上下滚动 */
+
+background:white;
+
+border-radius:20px;
+
+padding:30px;
+
+box-sizing:border-box;
+
+text-align:center;
+
+color:#222;
+
+}
+
+.detail-box *{
+
+font-family:
+Arial,
+"Microsoft YaHei",
+sans-serif;
+
+-webkit-font-smoothing:antialiased;
+
+text-rendering:optimizeLegibility;
+
+}
+
+
+.detail-info{
+
+background:#f5f9ff;
+
+padding:12px;
+
+border-radius:12px;
+
+text-align:left;
+
+line-height:1.8;
+
+color:#222;
+
+}
+
+.detail-box *{
+
+font-family:
+Arial,
+"Microsoft YaHei",
+sans-serif;
+
+-webkit-font-smoothing:antialiased;
+
+text-rendering:optimizeLegibility;
+
+}
+
+.detail-list{
+
+margin-top:15px;
+
+max-height:45vh;
+
+overflow-y:auto;
+
+text-align:left;
+
+padding-right:5px;
+
+}
+
+
+.detail-item{
+
+padding:10px;
+
+margin-bottom:5px;
+
+border-radius:10px;
+
+background:#f8fafc;
+
+border-bottom:none;
+
+font-size:16px;
+
+font-weight:bold;
+
+}
+
+
+.detail-close{
+
+margin-top:15px;
+
+width:80%;
+
+background:#333;
+
+color:white;
+
+font-size:18px;
+
+padding:10px;
+
+border-radius:12px;
+
+}
+
+.detail-download{
+
+margin-top:15px;
+
+width:80%;
+
+background:#1565c0;
+
+color:white;
+
+font-size:18px;
+
+padding:10px;
+
+border-radius:12px;
+
+}
+
+/* =========================
+  小屏幕高度自动缩放
+========================= */
+
+@media (max-height:700px) and (max-width:600px){
+
+body{
+transform:scale(0.85);
+transform-origin:top center;
+width:117.6%;
+min-height:117.6vh;
+}
+
+
+#loginScreen{
+max-width:350px;
+}
+
+
+#loginScreen h1{
+font-size:26px;
+margin-bottom:15px;
+}
+
+
+#loginScreen input,
+#loginScreen select{
+
+font-size:18px;
+
+padding:10px;
+
+margin:5px 0;
+
+}
+
+
+button{
+
+padding:8px 15px;
+
+margin:5px;
+
+font-size:18px;
+
+}
+
+
+#teacherDashboard{
+
+margin-top:20px;
+
+}
+
+
+#teacherDashboard h2{
+
+font-size:20px;
+
+}
+
+
+.result-table th,
+.result-table td{
+
+padding:6px;
+
+}
+
+}
+
+@keyframes popup{
+
+from{
+
+transform:scale(0.8);
+
+opacity:0;
+
+}
+
+
+to{
+
+transform:scale(1);
+
+opacity:1;
+
+}
+
+}
+
+.detail-btn{
+
+width:45px;
+
+height:35px;
+
+padding:0;
+
+margin:0;
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+font-size:18px;
+
+}
+
+.result-table td:last-child{
+
+text-align:center;
+
+vertical-align:middle;
+
+}
+
+.back-btn {
+font-size: 18px;
+padding: 10px 20px;
+border: none;
+border-radius: 8px;
+background-color: #6c757d;
+color: white;
+cursor: pointer;
+margin-bottom: 20px;
+}
+
+.back-btn:hover {
+opacity: 0.85;
+}
+
+/* =====================
+  Live Battle Ranking
+===================== */
+
+#battleRanking{
+
+position:fixed;
+
+top:15px;
+left:50%;
+
+transform:translateX(-50%);
+
+width:calc(100vw - 30px);
+max-width:600px;
+
+min-height:60px;
+max-height:140px;
+
+background:white;
+
+border-radius:15px;
+
+padding:10px;
+
+font-size:13px;
+
+font-weight:bold;
+
+box-shadow:0 5px 15px rgba(0,0,0,0.15);
+
+z-index:9999;
+
+text-align:center;
+
+line-height:1.5;
+
+display:none;
+
+overflow-y:auto;
+
+box-sizing:border-box;
+
+}
+
+.battle-player{
+
+display:inline-block;
+
+background:#f8fafc;
+
+border-radius:8px;
+
+padding:5px 8px;
+
+margin:3px;
+
+white-space:nowrap;
+
+font-size:13px;
+
+}
+
+
+@media(max-width:600px){
+
+#battleRanking{
+
+width:calc(100vw - 20px);
+
+max-width:none;
+
+max-height:120px;
+
+padding:8px;
+
+font-size:12px;
+
+line-height:1.5;
+
+}
+
+}
+
+@media(max-width:600px){
+
+.battle-player{
+
+font-size:11px;
+
+padding:4px 6px;
+
+margin:2px;
+
+}
+
+}
+
+.pass{
+
+color:#00bcd4;
+
+font-weight:bold;
+
+}
+
+
+.fail{
+
+color:red;
+
+font-weight:bold;
+
+}
+
+</style>
+
+</head>
+
+
+
+<body>
+
+<!-- =======================
+学生登录画面
+======================= -->
+
+<div id="loginScreen">
+
+<h1>Reading Test</h1>
+
+<select id="studentGrade" onchange="loadStudents()">
+
+<option value="">请选择年级</option>
+	<option value="Year 6">Year 6</option>
+    </select>
+
+
+<br>
+
+
+<select id="studentName">
+
+<option value="">
+请选择学生
+</option>
+
+</select>
+
+<br>
+
+<button onclick="showTestMode()">
+开始测试
+</button>
+
+<div id="testModeBox" style="display:none;">
+
+<h3>请选择测试方式</h3>
+
+<button 
+class="start-btn"
+onclick="startWithMode('normal')">
+📖 顺着测试
+</button>
+
+
+<button 
+class="range-btn"
+onclick="startWithMode('random')">
+🔀 随机测试
+</button>
+
+</div>
+
+<hr>
+
+<div id="teacherDashboard">
+
+<h2>
+📋
+<br>
+学生成绩记录
+</h2>
+
+
+<button onclick="loadDashboard()">
+🔄 更新记录
+</button>
+
+
+<div id="resultTable">
+
+读取中...
+
+</div>
+
+
+</div>
+
+</div>
+
+
+<!-- =======================
+测试画面
+======================= -->
+
+<div id="testScreen" style="display:none;">
+
+<div id="battleRanking">
+🔥 Reading Battle
+</div>
+
+<div class="card" id="word">
+开始
+</div>
+
+<div class="phrase-box">
+
+<div class="phrase-title">
+Short Phrase
+</div>
+
+
+<div class="phrase" id="phrase">
+
+</div>
+
+</div>
+
+
+
+<button id="startBtn" class="start-btn" onclick="startListening()">
+
+🎤 Baca
+
+</button>
+
+
+
+<button id="stopBtn" class="stop-btn" onclick="stopListening()">
+
+⏹ 停止朗读
+
+</button>
+
+
+
+<button id="skipBtn" class="skip-btn" onclick="skipWord()">
+
+➡️ 下一题
+
+</button>
+
+<button id="saveBtn" onclick="saveProgress()">
+
+💾 保存进度
+
+</button>
+
+<div class="result" id="result">
+
+</div>
+
+
+
+<button
+id="restartBtn"
+class="restart-btn"
+onclick="confirmRestart()"
+>
+重新开始
+</button>
+
+
+<button class="range-btn" onclick="selectRange()">
+
+选择词汇范围
+
+</button>
+
+<button
+    class="back-btn"
+    onclick="leaveBattleAndReturn()"
+>
+返回
+</button>
+
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
+
+import {
+getFirestore,
+collection,
+addDoc,
+doc,
+setDoc,
+getDoc,
+serverTimestamp,
+query,
+where,
+orderBy,
+limit,
+getDocs,
+onSnapshot
+} from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
+
+
+const firebaseConfig = {
+apiKey: "AIzaSyAP78bWNJKXgbQ8_qXlSF8axNYj2PxBbA4",
+authDomain: "moon-tuition-centre---reading.firebaseapp.com",
+projectId: "moon-tuition-centre---reading",
+storageBucket: "moon-tuition-centre---reading.firebasestorage.app",
+messagingSenderId: "366611737022",
+appId: "1:366611737022:web:2b97464bacda67893bb1ef"
+};
+
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+
+const db = getFirestore(app);
+
+
+// 让下面原本的 JavaScript 可以使用 Firebase
+window.db = db;
+
+window.collection = collection;
+window.addDoc = addDoc;
+window.getDocs = getDocs;
+window.onSnapshot = onSnapshot;
+
+window.doc = doc;
+window.setDoc = setDoc;
+window.getDoc = getDoc;
+
+window.serverTimestamp = serverTimestamp;
+
+window.firebaseReady = true;
+
+window.query = query;
+window.where = where;
+window.orderBy = orderBy;
+window.limit = limit;
+
+</script>
+
+<script>
+
+const SUBJECT = "Malay";
+const TEST_TYPE = "Reading";
+
+// 第2部分 JavaScript 会接这里
+const originalWords = [
+    "jalan raya",
+  "buku teks",
+  "pak cik",
+  "terima kasih",
+  "penjodoh bilangan",
+  "ayat majmuk",
+  "sesi akademik",
+  "permainan tradisional",
+  "bahan grafik",
+  "bahasa melayu",
+  "penduduk kampung",
+  "panduan keselamatan",
+  "perkataan bergaris",
+  "karangan berformat",
+  "kata adjektif",
+  "ujian akhir",
+  "ayat aktif",
+  "pihak sekolah",
+  "rakyat malaysia",
+  "ayat pasif",
+  "ciri ciri",
+  "hujung minggu",
+  "kata majmuk",
+  "keluarga angkat",
+  "kesihatan mental",
+  "makanan tradisional",
+  "tengah hari",
+  "kata kerja",
+  "kata nama",
+  "media sosial",
+  "pakaian tradisional",
+  "pasar raya",
+  "reka cipta",
+  "warga sekolah",
+  "ayat tunggal",
+  "bonsai kelapa",
+  "komputer riba",
+  "kuala lumpur",
+  "layang layang",
+  "minda sihat",
+  "salam sejahtera",
+  "wang kertas",
+  "anak angkat",
+  "yang",
+  "dan",
+  "di",
+  "itu",
+  "dengan",
+  "untuk",
+  "ini",
+  "dalam",
+  "tidak",
+  "murid",
+  "kamu",
+  "pada",
+  "akan",
+  "oleh",
+  "mereka",
+  "ke",
+  "saya",
+  "bahan",
+  "kata",
+  "ayat",
+  "soalan",
+  "tentang",
+  "kepada",
+  "kerana",
+  "dia",
+  "kita",
+  "sekolah",
+  "telah",
+  "hari",
+  "dapat",
+  "daripada",
+  "kemudian",
+  "ibu",
+  "menggunakan",
+  "encik",
+  "bawah",
+  "berdasarkan",
+  "buku",
+  "atas",
+  "beliau",
+  "tahun",
+  "tersebut",
+  "ialah",
+  "keluarga",
+  "perkataan",
+  "rumah",
+  "baca",
+  "perlu",
+  "kawan",
+  "tema",
+  "petikan",
+  "atau",
+  "cara",
+  "makanan",
+  "keselamatan",
+  "maklumat",
+  "orang"
+];
+
+const students = {
+
+"Year 6":[
+"Rowell",
+"张嘉欣"
+]
+
+};
+
+const phrases = [
+"jalan raya besar",
+  "buku teks sekolah",
+  "pak cik saya",
+  "terima kasih banyak",
+  "penjodoh bilangan betul",
+  "ayat majmuk mudah",
+  "sesi akademik baru",
+  "permainan tradisional seronok",
+  "bahan grafik menarik",
+  "bahasa melayu standard",
+  "penduduk kampung ramah",
+  "panduan keselamatan penting",
+  "perkataan bergaris tebal",
+  "karangan berformat mudah",
+  "kata adjektif mudah",
+  "ujian akhir tahun",
+  "ayat aktif mudah",
+  "pihak sekolah bersatu",
+  "rakyat malaysia bersatu",
+  "ayat pasif mudah",
+  "ciri ciri utama",
+  "hujung minggu seronok",
+  "kata majmuk mudah",
+  "keluarga angkat baik",
+  "kesihatan mental penting",
+  "makanan tradisional sedap",
+  "tengah hari panas",
+  "kata kerja transitif",
+  "kata nama am",
+  "media sosial popular",
+  "pakaian tradisional cantik",
+  "pasar raya besar",
+  "reka cipta kreatif",
+  "warga sekolah bersatu",
+  "ayat tunggal pendek",
+  "bonsai kelapa cantik",
+  "komputer riba baru",
+  "Kuala Lumpur besar",
+  "layang layang terbang",
+  "minda sihat penting",
+  "salam sejahtera semua",
+  "wang kertas banyak",
+  "anak angkat saya",
+  "yang cantik",
+  "dan lain-lain",
+  "di rumah saya",
+  "itu buku",
+  "dengan guru",
+  "untuk murid",
+  "ini buku",
+  "dalam kelas",
+  "tidak suka",
+  "murid sekolah",
+  "kamu semua",
+  "pada hari ini",
+  "akan datang",
+  "oleh guru",
+  "mereka gembira",
+  "ke sekolah",
+  "saya suka",
+  "bahan bacaan",
+  "kata nama",
+  "ayat mudah",
+  "soalan mudah",
+  "tentang alam",
+  "kepada murid",
+  "kerana dia baik",
+  "dia guru",
+  "kita jaga",
+  "sekolah saya",
+  "telah dibuang",
+  "hari ini",
+  "dapat belajar",
+  "daripada guru",
+  "kemudian buang",
+  "ibu saya",
+  "menggunakan pensel",
+  "encik guru",
+  "bawah pokok",
+  "berdasarkan gambar ini",
+  "buku nota",
+  "di atas meja",
+  "beliau guru saya",
+  "tahun baru",
+  "buku tersebut",
+  "dia ialah guru",
+  "keluarga saya",
+  "perkataan mudah",
+  "rumah saya",
+  "baca buku",
+  "perlu baca",
+  "kawan baik",
+  "tema mudah",
+  "petikan pendek",
+  "atau tidak",
+  "cara mudah",
+  "makanan sihat",
+  "keselamatan penting",
+  "maklumat mudah",
+  "orang ramai" 
+];
+
+let words = [];
+
+let selectedRange = [];
+
+let testMode = "normal"; 
+
+let current = 0;
+
+let correct = 0;
+
+let wrong = 0;
+
+let wrongWords = [];
+
+let testedWordsToday = [];
+
+let skipped = false;
+
+
+
+let recognition = null;
+
+let isListening = false;
+
+/*
+let mediaRecorder = null;
+let audioChunks = [];
+*/
+
+let resultTimer = null;
+
+let isChecking = false;
+
+let finished = false;
+
+// =======================
+// 学生资料
+// =======================
+
+let currentStudentName = "";
+
+let currentStudentGrade = "";
+
+let currentTestName = "BM_P1_Reading_Set 1";
+
+function getTestID(){
+
+return (
+currentStudentName + "_" +
+currentStudentGrade + "_" +
+SUBJECT + "_" +
+TEST_TYPE
+);
+
+}
+
+const wordDiv =
+document.getElementById("word");
+
+const resultDiv =
+document.getElementById("result");
+
+// =======================
+// 选择测试方式
+// =======================
+
+// =======================
+// 显示测试方式选择
+// =======================
+
+function showTestMode(){
+
+document.getElementById("testModeBox").style.display="block";
+
+}
+// =======================
+// 学生开始测试
+// =======================
+
+async function startStudentSession(){
+
+const name =
+document.getElementById("studentName").value.trim();
+
+const grade =
+document.getElementById("studentGrade").value;
+
+
+if(!name){
+
+alert("请输入学生名字");
+
+return;
+
+}
+
+
+if(!grade){
+
+alert("请选择年级");
+
+return;
+
+}
+
+
+currentStudentName = name;
+
+currentStudentGrade = grade;
+
+await startBattle();
+
+
+// 隐藏登录画面
+document.getElementById("loginScreen").style.display = "none";
+
+
+// 显示测试画面
+document.getElementById("testScreen").style.display = "block";
+
+document.getElementById(
+"battleRanking"
+).style.display="block";
+
+
+watchBattle();
+
+// 检查是否有之前保存的进度
+await loadProgress();
+
+}
+
+// =======================
+// 读取学生之前的进度
+// =======================
+
+function watchBattle(){
+
+    let battlePlayers = {};
+
+
+    function renderBattle(){
+
+        const now = Date.now();
+
+
+        let players =
+            Object.values(battlePlayers)
+            .filter(player => {
+
+                // 不是测试中的学生
+                if(player.status !== "playing"){
+                    return false;
+                }
+
+
+                // 没有心跳资料
+                if(!player.lastActive){
+                    return false;
+                }
+
+
+                // 超过 10 秒没有心跳
+                // 就认为页面已经离开
+                if(
+                    now - player.lastActive
+                    > 10000
+                ){
+
+                    return false;
+
+                }
+
+
+                return true;
+
+            });
+
+
+        // 正确率高的排前面
+        players.sort(
+            (a,b) =>
+            b.accuracy - a.accuracy
+        );
+
+
+        let html = "";
+
+
+        players.forEach(
+            (player,index)=>{
+
+                let medal = "";
+
+
+                if(index === 0){
+                    medal = "🥇";
+                }
+                else if(index === 1){
+                    medal = "🥈";
+                }
+                else if(index === 2){
+                    medal = "🥉";
+                }
+
+
+                html += `
+
+                <span class="battle-player">
+
+                    ${medal}
+                    ${player.studentName}
+                    ${player.accuracy}%
+
+                </span>
+
+                `;
+
+            }
+        );
+
+
+        document.getElementById(
+            "battleRanking"
+        ).innerHTML = html;
+
+    }
+
+
+    // =========================
+    // Firebase 实时监听
+    // =========================
+
+    window.onSnapshot(
+
+        window.collection(
+            window.db,
+            "liveBattle"
+        ),
+
+        (snapshot)=>{
+
+            snapshot.forEach((doc)=>{
+
+                const data = doc.data();
+
+                battlePlayers[doc.id] = data;
+
+            });
+
+
+            renderBattle();
+
+        }
+
+    );
+
+
+    // =========================
+    // 每1秒检查在线状态
+    // =========================
+
+    clearInterval(
+        window.battleDisplayTimer
+    );
+
+
+    window.battleDisplayTimer =
+        setInterval(()=>{
+
+            renderBattle();
+
+        },10000);
+
+}
+
+async function startBattle(){
+
+    await window.setDoc(
+
+        window.doc(
+            window.db,
+            "liveBattle",
+            currentStudentName
+        ),
+
+        {
+
+            studentName:
+            currentStudentName,
+
+            correct:0,
+
+            wrong:0,
+
+            accuracy:0,
+
+            status:"playing",
+
+            lastActive:Date.now()
+
+        }
+
+    );
+
+
+    // =========================
+    // Reading Test 在线心跳
+    // =========================
+
+    clearInterval(window.battleHeartbeat);
+
+    window.battleHeartbeat = setInterval(async ()=>{
+
+        if(!currentStudentName){
+            return;
+        }
+
+        try{
+
+            await window.setDoc(
+
+                window.doc(
+                    window.db,
+                    "liveBattle",
+                    currentStudentName
+                ),
+
+                {
+
+                    status:"playing",
+
+                    lastActive:Date.now()
+
+                },
+
+                {
+                    merge:true
+                }
+
+            );
+
+        }
+        catch(error){
+
+            console.log(
+                "Battle heartbeat failed:",
+                error
+            );
+
+        }
+
+    },10000);
+
+}
+
+async function updateBattleFirebase(){
+
+
+let total =
+correct+wrong;
+
+
+let accuracy =
+total===0
+?
+0
+:
+Math.round(
+(correct/total)*100
+);
+
+
+
+await window.setDoc(
+
+window.doc(
+window.db,
+"liveBattle",
+currentStudentName
+),
+
+{
+
+studentName:
+currentStudentName,
+
+correct,
+
+wrong,
+
+accuracy,
+
+status:"playing",
+
+lastActive:Date.now()
+
+}
+
+);
+
+
+}
+
+// =======================
+// 离开页面自动退出 Battle
+// =======================
+
+// =======================
+// 离开 Reading Test
+// =======================
+
+async function leaveBattle(){
+
+    if(!currentStudentName){
+        return;
+    }
+
+    // 停止在线心跳
+    clearInterval(
+        window.battleHeartbeat
+    );
+
+    try{
+
+        await window.setDoc(
+
+            window.doc(
+                window.db,
+                "liveBattle",
+                currentStudentName
+            ),
+
+            {
+
+                status:"finished",
+
+                lastActive:Date.now()
+
+            },
+
+            {
+
+                merge:true
+
+            }
+
+        );
+
+    }
+    catch(error){
+
+        console.log(
+            "Leave Battle failed:",
+            error
+        );
+
+    }
+
+}
+
+// =======================
+// 页面离开检测
+// =======================
+
+document.addEventListener(
+    "visibilitychange",
+    ()=>{
+
+        if(
+            document.visibilityState === "hidden"
+        ){
+
+            if(currentStudentName){
+
+                window.setDoc(
+
+                    window.doc(
+                        window.db,
+                        "liveBattle",
+                        currentStudentName
+                    ),
+
+                    {
+
+                        status:"finished",
+
+                        lastActive:Date.now()
+
+                    },
+
+                    {
+
+                        merge:true
+
+                    }
+
+                );
+
+            }
+
+        }
+
+    }
+);
+
+async function loadProgress(){
+
+try{
+
+
+const testID =
+currentStudentName + "_" +
+currentStudentGrade + "_" +
+SUBJECT + "_" +
+TEST_TYPE;
+
+
+const ref =
+window.doc(
+window.db,
+"testProgress",
+testID
+);
+
+
+const snapshot =
+await window.getDoc(ref);
+
+
+
+if(!snapshot.exists()){
+
+restart();
+
+return;
+
+}
+
+
+
+const data =
+snapshot.data();
+
+
+
+const resume =
+confirm(
+"📚 找到之前保存的进度！\n\n"+
+"是否继续？"
+);
+
+if(resume){
+
+
+selectedRange =
+data.selectedRange;
+
+
+words =
+data.words;
+
+
+current =
+data.current;
+
+
+correct =
+data.correct;
+
+
+wrong =
+data.wrong;
+
+
+wrongWords =
+data.wrongWords || [];
+
+testedWordsToday =
+data.testedWordsToday || [];
+
+
+showWord();
+
+
+}
+else{
+
+restart();
+
+}
+
+
+
+}
+
+catch(error){
+
+console.error(error);
+
+restart();
+
+}
+
+
+}
+// =======================
+// 显示词汇
+// =======================
+
+function showWord(){
+
+
+if(words[current]){
+
+
+wordDiv.innerText =
+words[current];
+
+document.getElementById("phrase").innerText =
+phrases[originalWords.indexOf(words[current])] || "";
+
+}
+
+else{
+
+
+wordDiv.innerText =
+"请选择词汇";
+
+
+}
+
+resultDiv.innerHTML="";
+
+skipped = false;
+
+document.body.className="normal";
+
+
+}
+
+// =======================
+// 开始朗读
+// =======================
+
+async function startListening(){
+
+if(isListening){
+return;
+}
+
+
+const SpeechRecognition =
+window.SpeechRecognition ||
+window.webkitSpeechRecognition;
+
+
+if(!SpeechRecognition){
+
+alert("请使用 Google Chrome 浏览器");
+return;
+
+}
+
+
+recognition = new SpeechRecognition();
+
+recognition.lang="ms-MY";
+
+recognition.continuous=true;
+
+recognition.interimResults=false;
+
+
+isListening=true;
+
+
+// =================
+// 先设置结果监听
+// =================
+
+recognition.onresult=function(event){
+
+
+let text="";
+
+
+for(
+let i=0;
+i<event.results.length;
+i++
+){
+
+text += event.results[i][0].transcript;
+
+}
+
+
+text=text.trim();
+
+
+console.log("Chrome识别结果:",text);
+
+resultDiv.innerHTML =
+"听到：" + text;
+
+
+
+clearTimeout(resultTimer);
+
+
+resultTimer=setTimeout(()=>{
+
+checkAnswer(text);
+
+},800);
+
+
+};
+
+
+
+// =================
+// 自动重新监听
+// =================
+
+recognition.onend=function(){
+
+if(isListening){
+
+try{
+
+recognition.start();
+
+}catch(e){}
+
+}
+
+};
+
+
+/*
+// =================
+// 开始录音保存
+// =================
+
+const stream =
+await navigator.mediaDevices.getUserMedia({
+audio:true
+});
+
+
+audioChunks=[];
+
+
+mediaRecorder =
+new MediaRecorder(stream);
+
+
+mediaRecorder.ondataavailable=e=>{
+
+audioChunks.push(e.data);
+
+};
+
+
+mediaRecorder.start();
+*/
+
+
+// 最后才启动识别
+
+recognition.start();
+
+
+resultDiv.innerHTML =
+"🎧 正在听...";
+
+
+}
+
+
+
+
+
+
+
+// =======================
+// 停止朗读
+// =======================
+
+function stopListening(){
+
+
+isListening=false;
+
+
+if(recognition){
+
+recognition.onend=null;
+
+recognition.stop();
+
+recognition=null;
+
+}
+
+/*
+// 停止录音
+
+if(mediaRecorder){
+
+mediaRecorder.stop();
+
+
+mediaRecorder.onstop = ()=>{
+
+
+const audioBlob =
+new Blob(
+audioChunks,
+{
+type:"audio/webm"
+}
+);
+
+
+const audioURL =
+URL.createObjectURL(audioBlob);
+
+
+const audio =
+document.createElement("audio");
+
+audio.controls=true;
+
+audio.src=audioURL;
+
+
+document.getElementById("result")
+.appendChild(audio);
+
+
+};
+
+
+}
+*/
+
+}
+
+// =======================
+// 不会，跳过下一题
+// =======================
+
+function skipWord(){
+
+
+stopListening();
+
+
+// 记录跳过 = 错误
+
+wrong++;
+
+updateBattleFirebase();
+
+wrongWords.push(
+words[current]
+);
+
+testedWordsToday.push({
+
+word:words[current],
+
+result:"wrong"
+
+});
+
+
+
+// 背景变红
+
+document.body.className =
+"incorrect";
+
+
+resultDiv.innerHTML =
+"➡️ 跳过：" + words[current];
+
+
+
+setTimeout(()=>{
+
+
+current++;
+
+
+if(current < words.length){
+
+showWord();
+
+}
+
+else{
+
+showResult();
+
+}
+
+
+},800);
+
+
+}
+
+
+
+// =======================
+// 判断答案
+// =======================
+
+
+
+function checkAnswer(text) {
+    if (isChecking) {
+        return;
+    }
+
+    isChecking = true;
+
+    if (!words[current]) {
+        isChecking = false;
+        return;
+    }
+
+    // 标准化马来文：统一大小写、标点和空格
+    function normalizeMalay(value) {
+        return String(value || "")
+            .toLowerCase()
+            .replace(/[.,!?;:"“”‘’()[\]{}]/g, " ")
+            .replace(/\s+/g, " ")
+            .trim();
+    }
+
+    const answer = normalizeMalay(words[current]);
+    const cleanText = normalizeMalay(text);
+
+    console.log("学生读出的内容:", cleanText);
+    console.log("目标词汇:", answer);
+
+    // 没有识别到语音，不直接判对
+    if (!cleanText || !answer) {
+        isChecking = false;
+        resultDiv.innerHTML = "❌ 没有听清楚，请再试一次";
+        return;
+    }
+
+    
+    // ===== 马来文宽松发音判断 =====
+
+    const targetCompact = answer.replace(/\s+/g, "");
+    const spokenTokens = cleanText.split(/\s+/).filter(Boolean);
+    const targetTokenCount = answer.split(/\s+/).length;
+
+    let similarity = 0;
+
+    // 忽略空格，例如：
+    // dikitar 和 di kitar 可以视为相同
+    // alam sekitar 和 alamsekitar 可以视为相同
+    if (
+        targetCompact.length >= 5 &&
+        spokenTokens.join("").includes(targetCompact)
+    ) {
+        similarity = 1;
+    }
+
+    // 比较连续词组，允许 Chrome 把一个词拆成两个词
+    // 或把两个词识别成相近的连续词
+    for (
+        let start = 0;
+        start < spokenTokens.length;
+        start++
+    ) {
+        for (
+            let count = Math.max(1, targetTokenCount - 1);
+            count <= targetTokenCount + 1;
+            count++
+        ) {
+            if (start + count > spokenTokens.length) {
+                continue;
+            }
+
+            const spokenCandidate = spokenTokens
+                .slice(start, start + count)
+                .join("")
+                .replace(/[^a-z]/g, "");
+
+            if (!spokenCandidate) {
+                continue;
+            }
+
+            const maxLength = Math.max(
+                targetCompact.length,
+                spokenCandidate.length
+            );
+
+            const distance = levenshtein(
+                targetCompact,
+                spokenCandidate
+            );
+
+            const wordSimilarity =
+                1 - distance / maxLength;
+
+            if (wordSimilarity > similarity) {
+                similarity = wordSimilarity;
+            }
+        }
+    }
+
+    // 更宽松的判断标准
+    let threshold;
+
+    // 特别处理容易被 Chrome 误识别的马来文
+    if (targetCompact === "tin") {
+        threshold = 0.50;
+    } else if (targetCompact === "majmuk") {
+        threshold = 0.55;
+    } else if (targetCompact.length <= 3) {
+        threshold = 0.90;
+    } else if (targetCompact.length <= 7) {
+        threshold = 0.72;
+    } else {
+        threshold = 0.70;
+    }
+
+    console.log("学生识别结果:", cleanText);
+    console.log("目标词汇:", answer);
+    console.log("相似度:", similarity);
+    console.log("判断标准:", threshold);
+
+
+    if (similarity >= threshold) {
+        // ===== 答对 =====
+        stopListening();
+        isChecking = false;
+
+        correct++;
+
+        updateBattleFirebase();
+
+        testedWordsToday.push({
+            word: words[current],
+            result: "correct"
+        });
+
+        // 从不会读的词汇列表移除
+        wrongWords = wrongWords.filter(
+            word => word !== words[current]
+        );
+
+        document.body.className = "correct";
+        resultDiv.innerHTML = "✅ 正确！";
+
+        setTimeout(() => {
+            current++;
+
+            if (current < words.length) {
+                showWord();
+            } else {
+                showResult();
+            }
+        }, 800);
+
+    } else {
+        // ===== 答错：允许学生重读 =====
+        isChecking = false;
+
+        const currentWord = words[current];
+
+        const exist = testedWordsToday.find(
+            item => item.word === currentWord
+        );
+
+        if (!exist) {
+            testedWordsToday.push({
+                word: currentWord,
+                result: "wrong"
+            });
+        }
+
+        document.body.className = "incorrect";
+        resultDiv.innerHTML = "❌ 再试一次";
+    }
+}
+
+// =======================
+// 过滤重复
+// 猫猫猫 -> 猫
+// =======================
+
+
+function removeRepeat(text){
+
+
+
+if(text.length<=1){
+
+return text;
+
+}
+
+
+
+let result="";
+
+
+
+for(let i=0;i<text.length;i++){
+
+
+if(text[i] !== text[i-1]){
+
+
+result += text[i];
+
+
+}
+
+
+}
+
+
+
+return result;
+
+
+
+}
+
+
+
+
+
+
+
+// =======================
+// 完成统计
+// =======================
+
+function showResult(){
+
+finished = true;
+
+
+// 成绩页面模式
+document.body.classList.add("result-mode");
+
+document.querySelector(".phrase-box").style.display="none";
+
+wordDiv.innerHTML =
+`
+<div class="app-header">
+
+   <img 
+src="images/moon.png"
+class="moon-logo">
+
+   <div class="app-header-text">
+
+       <div class="app-title">
+       MOON TUITION CENTRE
+       </div>
+
+       <div class="app-subtitle">
+       Keep Practicing ❤️
+       </div>
+
+   </div>
+
+</div>
+`;
+
+// 清除答题时的背景颜色
+document.body.classList.remove("correct");
+document.body.classList.remove("incorrect");
+
+// 隐藏按钮
+
+document.getElementById("startBtn").style.display="none";
+
+document.getElementById("stopBtn").style.display="none";
+
+document.getElementById("skipBtn").style.display="none";
+
+document.getElementById("saveBtn").style.display="none";
+
+document.querySelector(".range-btn").style.display="none";
+
+document.getElementById("restartBtn").style.display="none";
+
+
+// 计算正确率
+
+let accuracy =
+Math.round(
+(correct / words.length) * 100
+);
+
+
+// 判断是否通过
+
+let statusHTML = "";
+
+
+if(accuracy >= 80){
+
+
+statusHTML = `
+
+<div class="pass-box">
+
+
+<div class="pass-main">
+PASS
+</div>
+
+
+<div class="pass-small">
+及格/LULUS
+</div>
+
+
+<img src="images/pass-face.png" class="pass-icon">
+
+
+</div>
+
+`;
+
+
+}
+else{
+
+
+statusHTML = `
+
+<div class="fail-box">
+
+   <div class="fail-main">
+       FAIL
+   </div>
+
+   <div class="fail-small">
+       不及格/GAGAL
+   </div>
+
+   <img src="images/sad-face.png" class="sad-icon">
+
+</div>
+
+`;
+
+}
+
+
+
+resultDiv.innerHTML =
+`
+
+<div class="result-card">
+
+
+   <!-- 顶部：学生资料 + PASS/FAIL -->
+
+<div class="result-header-row">
+
+   <div class="student-info">
+
+       <div class="info-row">
+           <span class="info-label">👤 Student / 学生 / Murid：</span>
+           <span class="info-value">${currentStudentName}</span>
+       </div>
+
+
+       <div class="info-row">
+           <span class="info-label">📚 Test / 测试 / Ujian：</span>
+           <span class="info-value">${currentTestName}</span>
+       </div>
+
+
+       <div class="info-row">
+           <span class="info-label">📅 Date / 日期 / Tarikh：</span>
+           <span class="info-value">${new Date().toLocaleDateString("en-GB")}</span>
+       </div>
+
+
+   </div>
+
+
+   ${statusHTML}
+
+
+</div>
+
+
+
+   <!-- 成绩统计 -->
+
+   <div class="result-stats">
+
+
+       <div class="stat-row">
+
+           <span>
+               📄 Total / 总题数 / Jumlah
+           </span>
+
+           <span class="stat-value">
+               ${words.length}
+           </span>
+
+       </div>
+
+
+
+       <div class="stat-row">
+
+           <span>
+               ✅ Correct / 正确 / Betul
+           </span>
+
+           <span class="stat-value correct-num">
+               ${correct}
+           </span>
+
+       </div>
+
+
+
+       <div class="stat-row">
+
+           <span>
+               ❌ Wrong / 错误 / Salah
+           </span>
+
+           <span class="stat-value wrong-num">
+               ${wrong}
+           </span>
+
+       </div>
+
+
+
+       <div class="stat-row">
+
+           <span>
+               📊 Accuracy / 正确率 / Ketepatan
+           </span>
+
+           <span class="stat-value rate-num">
+               ${accuracy}%
+           </span>
+
+       </div>
+
+
+   </div>
+
+
+<!-- 会读的词汇 -->
+<div class="wrong-box" style="background:#d8ffd8;">
+
+    <div class="wrong-icon">
+        ✅
+    </div>
+
+    <div class="wrong-title-cn">
+        会读的词汇
+    </div>
+
+    <div class="wrong-title-en">
+        Words Able to Read
+    </div>
+
+    <div class="wrong-title-bm">
+        Perkataan yang Dapat Dibaca
+    </div>
+
+    <div class="wrong-word" style="background:rgba(255,255,255,0.6); color:#2e7d32;">
+
+        ${
+            [...new Set(
+                testedWordsToday
+                    .filter(item => item.result === "correct")
+                    .map(item => item.word)
+            )].join(", ") || "-"
+        }
+
+    </div>
+
+</div>
+
+
+   <!-- 不会读的词汇 -->
+
+   <div class="wrong-box">
+
+       <div class="wrong-icon">
+           💡
+       </div>
+
+
+       <div class="wrong-title-cn">
+           不会读的词汇
+       </div>
+
+
+       <div class="wrong-title-en">
+           Words Unable to Read
+       </div>
+
+
+       <div class="wrong-title-bm">
+           Perkataan yang Tidak Dapat Dibaca
+       </div>
+
+
+       <div class="wrong-word">
+
+           ${
+               wrongWords.length > 0
+               ?
+               wrongWords.join(", ")
+               :
+               "-"
+           }
+
+       </div>
+
+   </div>
+
+
+
+   <!-- 按钮 -->
+
+   <div class="result-actions">
+
+       <button
+           class="save-result-btn"
+           onclick="saveResult()"
+       >
+           💾 保存成绩
+       </button>
+
+
+       <button
+           class="restart-result-btn"
+           onclick="confirmRestart()"
+       >
+           重新开始
+       </button>
+
+   </div>
+
+
+<div class="footer-wave">
+   <img src="images/footer-wave.png">
+</div>
+
+
+</div>
+
+`;
+
+
+
+}
+
+
+
+
+
+
+
+
+// =======================
+// 重新开始
+// =======================
+
+function restart(){
+
+userStarted = true;
+
+
+// 根据测试模式决定顺序
+
+if(testMode === "random"){
+
+words = shuffle([...selectedRange]);
+
+}
+else{
+
+words = [...selectedRange];
+
+}
+
+
+current=0;
+
+correct=0;
+
+wrong=0;
+
+wrongWords=[];
+
+testedWordsToday=[];
+
+
+// 清除成绩页面模式
+document.body.classList.remove("result-mode");
+
+
+// 恢复短语显示
+document.querySelector(".phrase-box").style.display="block";
+
+
+// 恢复按钮
+
+document.getElementById("startBtn").style.display="inline-block";
+
+document.getElementById("stopBtn").style.display="inline-block";
+
+document.getElementById("skipBtn").style.display="inline-block";
+
+document.getElementById("saveBtn").style.display="inline-block";
+
+document.querySelector(".range-btn").style.display="inline-block";
+
+document.getElementById("restartBtn").style.display="inline-block";
+
+
+showWord();
+
+
+}
+
+
+
+
+
+
+
+function shuffle(array){
+
+
+return array.sort(
+()=>Math.random()-0.5
+);
+
+
+}
+
+function removeWordRepeat(text){
+
+let half = text.length / 2;
+
+let first = text.substring(0,half);
+
+let second = text.substring(half);
+
+
+if(first === second){
+
+return first;
+
+}
+
+return text;
+
+}
+
+
+
+
+
+
+
+
+// =======================
+// 选择范围
+// =======================
+
+
+function selectRange(){
+
+    let start = prompt("请输入开始词汇或序号");
+
+    // 点击 Cancel 时，不进行任何操作
+    if(start === null) return;
+
+    let end = prompt("请输入结束词汇或序号");
+
+    // 点击 Cancel 时，不进行任何操作
+    if(end === null) return;
+
+    start = start.trim();
+    end = end.trim();
+
+    // 支持输入词汇，也支持输入序号（从 1 开始）
+    let startIndex = /^\d+$/.test(start)
+        ? Number(start) - 1
+        : originalWords.indexOf(start);
+
+    let endIndex = /^\d+$/.test(end)
+        ? Number(end) - 1
+        : originalWords.indexOf(end);
+
+    // 检查输入是否有效
+    if(
+        startIndex < 0 ||
+        endIndex < 0 ||
+        startIndex >= originalWords.length ||
+        endIndex >= originalWords.length ||
+        startIndex > endIndex
+    ){
+        alert("词汇或序号无效，请重新输入");
+        return;
+    }
+
+    // 防止刷新导致进度消失
+    selectedRange = originalWords.slice(
+        startIndex,
+        endIndex + 1
+    );
+
+    restart();
+
+}
+
+// =======================
+// 英文发音相似度判断
+// =======================
+
+function getSimilarity(a,b){
+
+if(a.includes(b) || b.includes(a)){
+return 1;
+}
+
+
+let longer =
+a.length > b.length ? a : b;
+
+
+let shorter =
+a.length > b.length ? b : a;
+
+
+let longerLength =
+longer.length;
+
+
+if(longerLength === 0){
+return 1;
+}
+
+
+let distance =
+levenshtein(longer, shorter);
+
+
+return (
+longerLength - distance
+) / longerLength;
+
+}
+
+
+
+// 编辑距离算法
+
+function levenshtein(a,b){
+
+let matrix=[];
+
+
+for(let i=0;i<=b.length;i++){
+
+matrix[i]=[i];
+
+}
+
+
+for(let j=0;j<=a.length;j++){
+
+matrix[0][j]=j;
+
+}
+
+
+
+for(let i=1;i<=b.length;i++){
+
+for(let j=1;j<=a.length;j++){
+
+
+if(
+b.charAt(i-1)
+===
+a.charAt(j-1)
+){
+
+matrix[i][j]=matrix[i-1][j-1];
+
+}
+
+else{
+
+
+matrix[i][j]=Math.min(
+
+matrix[i-1][j-1]+1,
+
+matrix[i][j-1]+1,
+
+matrix[i-1][j]+1
+
+);
+
+
+}
+
+
+}
+
+}
+
+
+return matrix[b.length][a.length];
+
+}
+
+
+// =======================
+// 数字转换英文
+// =======================
+
+// =======================
+// 英文发音相近判断
+// =======================
+
+async function saveProgress(){
+
+console.log(
+"保存今日测试:",
+testedWordsToday
+);
+
+if(!currentStudentName){
+
+alert("请先填写学生名字");
+
+return;
+
+}
+
+
+try{
+
+const testID =
+currentStudentName + "_" +
+currentStudentGrade + "_" +
+SUBJECT + "_" +
+TEST_TYPE;
+
+
+await window.setDoc(
+
+window.doc(
+window.db,
+"testProgress",
+testID
+),
+
+{
+
+studentName:
+currentStudentName,
+
+grade:
+currentStudentGrade,
+
+subject:
+SUBJECT,
+
+testType:
+TEST_TYPE,
+
+selectedRange:
+selectedRange,
+
+words:
+words,
+
+
+current:
+current,
+
+
+correct:
+correct,
+
+
+wrong:
+wrong,
+
+
+wrongWords:
+wrongWords,
+
+testedWordsToday:
+testedWordsToday || [],
+
+totalWords:
+words.length,
+
+testName:
+currentTestName,
+
+testMode:testMode,
+
+updatedAt:
+window.serverTimestamp()
+
+}
+
+);
+
+
+alert(
+"✅ 进度已经保存！\n\n" +
+currentStudentName +
+"（" +
+currentStudentGrade +
+"）"
+);
+
+
+}
+
+catch(error){
+
+console.error(error);
+
+alert(
+"❌ 保存失败，请检查 Firebase 设置"
+);
+
+}
+
+}
+
+// =======================
+// 保存测试成绩到 Firebase
+// =======================
+
+async function saveResult(){
+
+if(!currentStudentName){
+
+alert("请先填写学生名字");
+
+return;
+
+}
+
+await window.setDoc(
+
+window.doc(
+window.db,
+"liveBattle",
+currentStudentName
+),
+
+{
+
+status:"finished"
+
+},
+
+{
+merge:true
+}
+
+);
+
+// 计算正确率
+const accuracy =
+Math.round(
+(correct / words.length) * 100
+);
+
+
+try{
+
+
+// 每个学生 + 年级使用固定 ID
+const resultId = getTestID();
+
+
+await window.setDoc(
+
+window.doc(
+window.db,
+"testResults",
+resultId
+),
+
+{
+
+studentName:
+currentStudentName,
+
+grade:
+currentStudentGrade,
+
+subject:
+SUBJECT,
+
+testType:
+TEST_TYPE,
+
+testName:
+currentTestName,
+
+testMode:testMode,
+
+
+testDate:
+new Date().toLocaleDateString("en-GB"),
+
+
+total:
+words.length,
+
+
+correct:
+correct,
+
+
+wrong:
+wrong,
+
+
+accuracy:
+accuracy,
+
+
+wrongWords:
+wrongWords,
+
+
+updatedAt:
+window.serverTimestamp()
+
+}
+
+);
+
+// =======================
+// 更新学生进度为完成
+// =======================
+
+await window.setDoc(
+
+window.doc(
+window.db,
+"testProgress",
+getTestID()
+),
+
+{
+
+studentName:
+currentStudentName,
+
+grade:
+currentStudentGrade,
+
+subject:
+SUBJECT,
+
+testType:
+TEST_TYPE,
+
+selectedRange:
+words,
+
+words:
+words,
+
+current:
+words.length,
+
+correct:
+correct,
+
+wrong:
+wrong,
+
+wrongWords:
+wrongWords,
+
+testedWordsToday: testedWordsToday || [],
+
+totalWords:
+words.length,
+
+testName:
+currentTestName,
+
+testMode:testMode,
+
+status:
+"已完成",
+
+updatedAt:
+window.serverTimestamp()
+
+}
+
+);
+
+
+alert(
+"🎉 成绩已经保存！\n\n" +
+currentStudentName +
+"（" +
+currentStudentGrade +
+"）\n\n" +
+"正确率：" +
+accuracy +
+"%"
+);
+
+
+}
+
+catch(error){
+
+console.error(
+"保存成绩失败：",
+error
+);
+
+
+alert(
+"❌ 保存成绩失败，请检查 Firebase 设置"
+);
+
+}
+
+}
+
+// =======================
+// Teacher Result Dashboard
+// =======================
+
+async function loadDashboard(){
+
+
+if(!window.firebaseReady){
+
+setTimeout(loadDashboard,500);
+
+return;
+
+}
+
+
+try{
+
+
+// 读取进度
+const progressSnapshot =
+await window.getDocs(
+
+window.collection(
+window.db,
+"testProgress"
+)
+
+);
+
+
+// 读取成绩
+const resultSnapshot =
+await window.getDocs(
+
+window.collection(
+window.db,
+"testResults"
+)
+
+);
+
+
+// 只读取当前 TestName 的成绩
+let resultMap = {};
+
+resultSnapshot.forEach((doc)=>{
+  const data = doc.data();
+
+  if(data.testName === currentTestName){
+    resultMap[data.studentName] = data;
+  }
+});
+
+
+
+// 合并资料
+
+let students = [];
+
+
+progressSnapshot.forEach((doc)=>{
+
+  const data = doc.data();
+
+  // 只显示当前 TestName 的学生
+  if(data.testName !== currentTestName){
+    return;
+  }
+
+  let result =
+    resultMap[data.studentName] || {};
+
+
+
+students.push({
+
+id:doc.id,
+
+studentName:data.studentName,
+
+grade:data.grade,
+
+current:data.current || 0,
+
+totalWords:data.totalWords || 0,
+
+accuracy:result.accuracy || 0,
+
+updatedAt:data.updatedAt
+
+});
+
+
+});
+
+
+
+// 排序
+// 第一：完成题数
+// 第二：准确率
+
+students.sort((a,b)=>{
+
+
+if(b.totalWords !== a.totalWords){
+
+return b.totalWords - a.totalWords;
+
+}
+
+
+return b.accuracy - a.accuracy;
+
+
+});
+
+
+
+let html = `
+
+<table class="result-table">
+
+<tr>
+
+<th>学生</th>
+
+<th>进度</th>
+
+<th>准确率</th>
+
+<th>保存时间</th>
+
+<th>详情</th>
+
+</tr>
+
+`;
+
+
+
+
+students.forEach((data)=>{
+
+
+let progress =
+data.current
++
+"/"
++
+data.totalWords;
+
+
+
+let status =
+(data.current >= data.totalWords)
+?
+"已完成"
+:
+"学习中";
+
+
+
+html += `
+
+
+<tr>
+
+
+<td>
+${data.studentName}
+</td>
+
+
+<td>
+${progress}
+</td>
+
+
+<td class="${data.accuracy >= 80 ? 'pass' : 'fail'}">
+
+${data.accuracy}%
+
+</td>
+
+<td>
+
+${
+data.updatedAt
+?
+data.updatedAt.toDate().toLocaleDateString("en-GB",{
+   day:"2-digit",
+   month:"2-digit"
+})
++
+"<br>"
++
+data.updatedAt.toDate().toLocaleTimeString("en-GB",{
+   hour:"2-digit",
+   minute:"2-digit"
+})
+:
+"-"
+}
+
+</td>
+
+
+
+<td>
+
+<button 
+class="detail-btn"
+onclick="openDetail('${data.id}')">
+
+📖
+
+</button>
+
+</td>
+
+
+
+</tr>
+
+
+`;
+
+
+});
+
+
+
+html += "</table>";
+
+
+
+document.getElementById(
+"resultTable"
+).innerHTML = html;
+
+
+
+}
+
+catch(error){
+
+console.log(error);
+
+
+document.getElementById(
+"resultTable"
+).innerHTML =
+"读取失败";
+
+
+}
+
+
+}
+
+async function loadResults(){
+
+
+if(!window.firebaseReady){
+
+console.log("Firebase loading...");
+
+setTimeout(loadResults,500);
+
+return;
+
+}
+
+
+try{
+
+const snapshot =
+await window.getDocs(
+
+window.collection(
+window.db,
+"testResults"
+)
+
+);
+
+
+
+let html = `
+
+<table class="result-table">
+
+<tr>
+
+<th>学生</th>
+
+<th>年级</th>
+
+<th>成绩</th>
+
+<th>状态</th>
+
+</tr>
+
+`;
+
+
+
+snapshot.forEach((doc)=>{
+
+
+const data =
+doc.data();
+
+
+
+let status =
+data.accuracy >=80
+?
+"PASS"
+:
+"FAIL";
+
+
+
+html += `
+
+<tr>
+
+<td>
+${data.studentName}
+</td>
+
+
+<td>
+${data.grade}
+</td>
+
+
+<td>
+${data.accuracy}%
+</td>
+
+
+<td class="${status.toLowerCase()}">
+
+${status}
+
+</td>
+
+
+</tr>
+
+
+`;
+
+
+});
+
+
+
+html += "</table>";
+
+
+
+document.getElementById(
+"resultTable"
+).innerHTML =
+html;
+
+
+
+}
+
+catch(error){
+
+console.log(error);
+
+document.getElementById(
+"resultTable"
+).innerHTML =
+"读取失败";
+
+}
+
+
+}
+
+function confirmRestart(){
+
+let result = confirm(
+"确定要重新开始吗？\n\n目前测试进度会全部清除。"
+);
+
+
+if(result){
+
+restart();
+
+}
+
+}
+
+/*
+// =======================
+// Refresh保护
+// =======================
+
+let pageLoaded = true;
+
+
+window.addEventListener(
+"beforeunload",
+function(e){
+
+if(pageLoaded){
+
+e.preventDefault();
+
+e.returnValue="";
+
+}
+
+});
+*/
+
+function loadStudents(){
+
+const grade =
+document.getElementById("studentGrade").value;
+
+
+const nameSelect =
+document.getElementById("studentName");
+
+
+// 清空
+
+nameSelect.innerHTML =
+`
+<option value="">
+请选择学生
+</option>
+`;
+
+
+if(!grade){
+return;
+}
+
+
+// 加入学生
+
+students[grade].forEach(name=>{
+
+
+let option =
+document.createElement("option");
+
+
+option.value=name;
+
+option.textContent=name;
+
+
+nameSelect.appendChild(option);
+
+
+});
+
+
+}
+
+// 初始加载
+
+selectedRange =
+[...originalWords];
+
+window.onload = function(){
+
+loadDashboard();
+
+};
+
+async function openDetail(id){
+
+console.log("点击详情:", id);
+
+
+try{
+
+
+const ref =
+window.doc(
+window.db,
+"testProgress",
+id
+);
+
+
+console.log("准备读取 Firebase");
+
+
+const snap =
+await window.getDoc(ref);
+
+
+console.log("Firebase读取完成", snap.exists());
+
+
+if(snap.exists()){
+
+
+showDetail(
+snap.data()
+);
+
+
+}
+else{
+
+
+alert("找不到学生资料");
+
+
+}
+
+
+}
+catch(error){
+
+
+console.error(
+"读取详情失败:",
+error
+);
+
+
+alert(
+"读取失败，请看 Console"
+);
+
+
+}
+
+
+}
+
+function showDetail(data){
+
+
+if(
+data.current >= data.totalWords
+){
+
+showFinalReport(data);
+
+return;
+
+}
+
+
+let list = "";
+
+
+const todayWords =
+data.testedWordsToday ||
+[];
+
+
+const wordStatus = {};
+
+
+todayWords.forEach(item=>{
+
+    wordStatus[item.word] = item.result;
+
+});
+
+
+Object.keys(wordStatus).forEach(word=>{
+
+
+    if(wordStatus[word]==="correct"){
+
+
+        list +=
+        `
+        <div class="detail-item">
+        ✅ ${word}
+        </div>
+        `;
+
+
+    }
+    else{
+
+
+        list +=
+        `
+        <div class="detail-item">
+        ❌ ${word}
+        </div>
+        `;
+
+
+    }
+
+
+});
+
+document.getElementById(
+"detailContent"
+).innerHTML =
+
+
+`
+<b>👤 Student / 学生 / Murid：</b>${data.studentName}
+<br>
+
+<b>📚 Year / 年级 / Tahun：</b>${data.grade}
+<br>
+
+<b>📝 Test / 测试 / Ujian：</b>${data.testName || "-"}
+<br>
+
+<hr>
+
+<b>📊 Progress / 进度 / Kemajuan：</b>
+${data.current}/${data.totalWords}
+
+<br><br>
+
+<b>今日测验词汇<br>
+Today's Quiz Vocabulary<br>
+Kosa Kata Kuiz Hari Ini
+
+<div class="detail-list">
+
+${list}
+
+</div>
+
+<br>
+
+✅：
+${data.correct}
+
+<br>
+
+❌：
+${data.wrong}
+
+`;
+
+document.getElementById(
+"detailModal"
+).style.display="flex";
+
+}
+
+function showFinalReport(data){
+
+document.querySelector(".detail-title").style.display="none";
+
+let accuracy =
+Math.round(
+(data.correct / data.totalWords) * 100
+);
+
+
+
+let statusHTML = "";
+
+
+if(accuracy >= 80){
+
+statusHTML = `
+
+<div class="pass-box">
+
+<div class="pass-main">
+PASS
+</div>
+
+<div class="pass-small">
+及格 / LULUS
+</div>
+
+<img src="images/pass-face.png" class="pass-icon">
+
+</div>
+
+`;
+
+}
+else{
+
+statusHTML = `
+
+<div class="fail-box">
+
+<div class="fail-main">
+FAIL
+</div>
+
+<div class="fail-small">
+不及格/GAGAL
+</div>
+
+<img src="images/sad-face.png" class="sad-icon">
+
+</div>
+
+`;
+
+}
+
+
+
+document.getElementById(
+"detailContent"
+).innerHTML =
+
+
+`
+
+<div class="result-card">
+
+
+<div class="app-header">
+
+<img src="images/moon.png"
+class="moon-logo">
+
+<div class="app-header-text">
+
+<div class="app-title">
+MOON TUITION CENTRE
+</div>
+
+</div>
+
+</div>
+
+
+
+<div class="result-header-row">
+
+
+<div class="student-info">
+
+
+<div class="info-row">
+
+<span class="info-label">
+👤 Student / 学生 / Murid：
+</span>
+
+<span class="info-value">
+${data.studentName}
+</span>
+
+</div>
+
+
+
+<div class="info-row">
+
+<span class="info-label">
+📚 Test / 测试 / Ujian：
+</span>
+
+<span class="info-value">
+${data.testName || "-"}
+</span>
+
+</div>
+
+
+
+<div class="info-row">
+
+<span class="info-label">
+📅 Date / 日期 / Tarikh：
+</span>
+
+<span class="info-value">
+${new Date().toLocaleDateString("en-GB")}
+</span>
+
+</div>
+
+
+</div>
+
+
+${statusHTML}
+
+
+</div>
+
+
+
+
+<div class="result-stats">
+
+
+<div class="stat-row">
+
+<span>
+📄 Total / 总题数 / Jumlah
+</span>
+
+<span class="stat-value">
+${data.totalWords}
+</span>
+
+</div>
+
+
+
+<div class="stat-row">
+
+<span>
+✅ Correct / 正确 / Betul
+</span>
+
+<span class="stat-value correct-num">
+${data.correct}
+</span>
+
+</div>
+
+
+
+<div class="stat-row">
+
+<span>
+❌ Wrong / 错误 / Salah
+</span>
+
+<span class="stat-value wrong-num">
+${data.wrong}
+</span>
+
+</div>
+
+
+
+<div class="stat-row">
+
+<span>
+📊 Accuracy / 正确率 / Ketepatan
+</span>
+
+<span class="stat-value rate-num">
+${accuracy}%
+</span>
+
+</div>
+
+
+</div>
+
+
+<!-- 会读的词汇 -->
+<div class="wrong-box" style="background:#d8ffd8;">
+
+    <div class="wrong-icon">
+        ✔️
+    </div>
+
+    <div class="wrong-title-cn">
+        会读的词汇
+    </div>
+
+    <div class="wrong-title-en">
+        Words Able to Read
+    </div>
+
+    <div class="wrong-title-bm">
+        Perkataan yang Dapat Dibaca
+    </div>
+
+    <div class="wrong-word" style="background:rgba(255,255,255,0.6); color:#2e7d32;">
+
+        ${
+            [...new Set(
+                (data.testedWordsToday || [])
+                    .filter(item => item.result === "correct")
+                    .map(item => item.word)
+            )].join(", ") || "-"
+        }
+
+    </div>
+
+</div>
+
+
+<div class="wrong-box">
+
+
+<div class="wrong-icon">
+💡
+</div>
+
+
+<div class="wrong-title-cn">
+不会读的词汇
+</div>
+
+
+<div class="wrong-title-en">
+Words Unable to Read
+</div>
+
+
+<div class="wrong-title-bm">
+Perkataan yang Tidak Dapat Dibaca
+</div>
+
+
+
+<div class="wrong-word">
+
+${
+data.wrongWords && data.wrongWords.length>0
+?
+data.wrongWords.join(", ")
+:
+"-"
+}
+
+</div>
+
+
+</div>
+
+
+
+<div class="footer-wave">
+
+<img src="images/footer-wave.png">
+
+</div>
+
+
+</div>
+
+
+`;
+
+
+
+// 打开弹窗
+document.getElementById(
+"detailModal"
+).style.display="flex";
+
+
+}
+
+
+
+function closeDetail(){
+
+document.getElementById(
+"detailModal"
+).style.display="none";
+
+}
+
+function downloadDetail(){
+
+
+const report =
+document.querySelector(".detail-box");
+
+// 隐藏按钮
+const buttons =
+report.querySelectorAll("button");
+
+
+buttons.forEach(btn=>{
+btn.style.display="none";
+});
+
+
+// ⭐增加这里
+
+let oldHeight = report.style.maxHeight;
+let oldOverflow = report.style.overflow;
+
+report.style.maxHeight = "none";
+report.style.overflow = "visible";
+
+html2canvas(report,{
+
+scale:6,
+
+backgroundColor:"#ffffff",
+
+useCORS:true,
+
+logging:false,
+
+allowTaint:true,
+
+removeContainer:true
+
+}).then(canvas=>{
+
+
+let link =
+document.createElement("a");
+
+
+link.download =
+"Reading_Report_" +
+currentStudentName +
+"_" +
+new Date()
+.toLocaleDateString("en-GB")
+.replace(/\//g,"-")
++
+".png";
+
+
+link.href =
+canvas.toDataURL(
+"image/png"
+);
+
+
+link.click();
+
+buttons.forEach(btn=>{
+btn.style.display="block";
+});
+
+
+// ⭐恢复scroll
+
+report.style.maxHeight = oldHeight;
+report.style.overflow = oldOverflow;
+
+
+});
+
+
+}
+
+function normalizeChinese(text){
+
+return text
+.trim()
+.replace(/[，。！？、；：“”‘’（）,.!?;:"'「」『』]/g,"")
+.replace(/\s+/g,"");
+
+}
+
+function chineseSimilarity(a,b){
+
+a = normalizeChinese(a);
+
+b = normalizeChinese(b);
+
+
+if(a === b){
+
+return 1;
+
+}
+
+
+if(!a || !b){
+
+return 0;
+
+}
+
+
+let distance =
+levenshtein(a,b);
+
+
+let maxLength =
+Math.max(
+a.length,
+b.length
+);
+
+
+return (
+maxLength - distance
+) / maxLength;
+
+}
+
+function startWithMode(mode){
+
+testMode = mode;
+
+
+// 隐藏选择按钮
+
+document.getElementById("testModeBox").style.display="none";
+
+
+// 开始测试
+
+startStudentSession();
+
+}
+
+async function leaveBattleAndReturn(){
+
+    await leaveBattle();
+
+    window.location.href =
+        "../index.html";
+
+}
+
+</script>
+
+</div>
+
+<div id="detailModal" class="detail-modal">
+
+
+<div class="detail-box">
+
+
+<div class="detail-title">
+📖 阅读进度详情 <br>
+Reading Progress Details <br>
+Butiran Kemajuan Bacaan
+</div>
+
+
+<div id="detailContent"
+class="detail-info">
+
+</div>
+
+
+<button 
+class="detail-download"
+onclick="downloadDetail()">
+
+📥 下载报告
+
+</button>
+
+
+<button 
+class="detail-close"
+onclick="closeDetail()">
+
+关闭
+
+</button>
+
+
+</div>
+
+
+</div>
+
+</body>
+
+</html>
